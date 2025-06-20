@@ -1,0 +1,12 @@
+body{
+    background-color: #dcdcdd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh; 
+}
+h1{
+    color: #1f2857;
+    font-size: 50px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
