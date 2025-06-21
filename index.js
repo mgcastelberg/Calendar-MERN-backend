@@ -14,12 +14,19 @@ const app = express();
 //     });
 // });
 
-// Todo: Login, Registro, RenewToken
-app.use('/api/auth', require('./routes/auth'));
+
 
 // Directorio público
 app.use(express.static('public'));
 
+// Lectura y parseo del body
+app.use(express.json());
+
+// Middleware para x-www-form-urlencoded
+app.use(express.urlencoded({ extended: true }));
+
+// Todo: Login, Registro, RenewToken
+app.use('/api/auth', require('./routes/auth'));
 
 // Escuchar peticiones
 app.listen(process.env.PORT, () => {
