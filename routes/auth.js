@@ -6,12 +6,12 @@
 const { Router } = require('express');
 const router = Router();
 
-router.get('/', (req, res) => {
-    console.log('se requiere /');
-    res.json({
-        status:true,
-        msg: 'Ruta de autenticación'
-    });
-});
+const { createUser, loginUser, renewToken } = require('../controllers/auth');
+
+router.post('/', loginUser);
+
+router.post('/renew', renewToken);
+
+router.post('/register', createUser);
 
 module.exports = router;
