@@ -14,6 +14,9 @@ const app = express();
 //     });
 // });
 
+// Todo: Login, Registro, RenewToken
+app.use('/api/auth', require('./routes/auth'));
+
 // Directorio público
 app.use(express.static('public'));
 
