@@ -1,4 +1,6 @@
 const express = require('express');
+const { dbConnection: connectMongo } = require('./database/mongo');
+const { dbConnection: connectMySQL, sequelize } = require('./database/mysql');
 require('dotenv').config();
 
 // console.log( process.env );
@@ -6,13 +8,19 @@ require('dotenv').config();
 // Crear servidor de express
 const app = express();
 
-// Rutas
-// app.get('/', (req, res) => {
-//     console.log('se requiere /');
-//     res.json({
-//         status:true
-//     });
-// });
+// Base de datos
+connectMongo();
+connectMySQL();
+
+// const sincronizar = async () => {
+//     try {
+//         await sequelize.sync({ force: true });
+//         console.log('Base de datos sincronizada');
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+// sincronizar();
 
 
 
