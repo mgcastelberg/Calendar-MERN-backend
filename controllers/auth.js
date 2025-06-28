@@ -35,9 +35,9 @@ const loginUser = async(req, res = response) => {
             msg: 'Login...',
             user: {
                 uid: user.id,
-                name: user.name,
-                token
-            }
+                name: user.name
+            },
+            token
         });
     } catch (error) {
         console.log(error);
@@ -99,10 +99,21 @@ const createUser = async(req, res = response) => {
     }
 }
 
-const renewToken = (req, res = response) => {
+const renewToken = async(req, res = response) => {
+
+    const { uid, name } = req;
+    
+    // Generar JWT
+    const token = await generateJWT(uid, name);
+
     res.json({
         status:true,
-        msg: 'Renew Token...'
+        msg: 'Renew Token...',
+        user: {
+            uid,
+            name
+        },
+        token
     });
 }
 

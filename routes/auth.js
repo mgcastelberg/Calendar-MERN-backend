@@ -9,6 +9,7 @@ const router = Router();
 
 const { createUser, loginUser, renewToken } = require('../controllers/auth');
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validateJWT } = require('../middlewares/validar-jwt');
 
 router.post('/',[
     check('email', 'Email is required').trim().isEmail(),
@@ -16,7 +17,7 @@ router.post('/',[
     validarCampos
 ], loginUser);
 
-router.post('/renew', renewToken);
+router.post('/renew', validateJWT, renewToken);
 
 router.post('/register',
     [   // Middlewares
