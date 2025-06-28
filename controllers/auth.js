@@ -1,4 +1,5 @@
 const { response } = require('express');
+const bcrypt = require('bcryptjs');
 const Usuario = require('../model/Usuario'); // mongoose
 const User = require('../model/User_model'); // sequelize
 
@@ -22,26 +23,31 @@ const createUser = async(req, res = response) => {
 
     try {
 
-        let usuario = await Usuario.findOne({ email }); // mongoose
-        // console.log(usuario);
-        if ( usuario ) {
-            return res.status(400).json({
-                status:false,
-                msg: 'Email already exists'
-            });
-        }
-        usuario = new Usuario({ name, email, password }); // mongoose
-        await usuario.save(); // mongoose
+        // let usuario = await Usuario.findOne({ email }); // mongoose
+        // // console.log(usuario);
+        // if ( usuario ) {
+        //     return res.status(400).json({
+        //         status:false,
+        //         msg: 'Email already exists'
+        //     });
+        // }
 
-        let newUser = await User.findOne({ where: { email: email } }); // sequelize
+        // Encriptar contraseña
+        const salt = bcrypt.genSaltSync();
+        const passwordHashed = bcrypt.hashSync(password, salt);
+
+        // usuario = new Usuario({ name, email, password: passwordHashed }); // mongoose
+        // await usuario.save(); // mongoose
+
+        let user = await User.findOne({ where: { email: email } }); // sequelize
         // console.log(newUser);
-        if ( newUser ) {
+        if ( user ) {
             return res.status(400).json({
                 status:false,
                 msg: 'Email already exists Sequelize'
             });
         }
-        newUser = await User.create({ name, email, password }); // sequelize
+        newUser = await User.create({ name, email, password: passwordHashed }); // sequelize
     
         res.status(201).json({
             status:true,

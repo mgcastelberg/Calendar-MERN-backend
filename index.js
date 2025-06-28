@@ -9,7 +9,7 @@ require('dotenv').config();
 const app = express();
 
 // Base de datos
-connectMongo();
+// connectMongo();
 connectMySQL();
 
 // const sincronizar = async () => {
