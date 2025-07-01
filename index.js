@@ -2,6 +2,7 @@ const express = require('express');
 const { dbConnection: connectMongo } = require('./database/mongo');
 const { dbConnection: connectMySQL, sequelize } = require('./database/mysql');
 require('dotenv').config();
+const cors = require('cors');
 
 // console.log( process.env );
 
@@ -22,7 +23,8 @@ connectMySQL();
 // }
 // sincronizar();
 
-
+// Cors
+app.use(cors());
 
 // Directorio público
 app.use(express.static('public'));
