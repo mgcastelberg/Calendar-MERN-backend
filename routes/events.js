@@ -10,20 +10,15 @@ const { validateJWT } = require("../middlewares/validar-jwt");
 const { validateFields } = require("../middlewares/validar-campos");
 const { getEvents, createEvent, updateEvent, deleteEvent } = require("../controllers/events");
 
-router.get('/',[
-    validateJWT
-],getEvents);
+// Como todos los endpoints son protegidos por el JWT lo subimos de nivel
+router.use(validateJWT);
 
-router.post('/',[
-    validateJWT
-],createEvent);
+router.get('/', getEvents);
 
-router.post('/:id',[
-    validateJWT
-],updateEvent);
+router.post('/', createEvent);
 
-router.delete('/:id',[
-    validateJWT
-],deleteEvent);
+router.put('/:id', updateEvent);
+
+router.delete('/:id', deleteEvent);
 
 module.exports = router;
