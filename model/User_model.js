@@ -20,4 +20,8 @@ const User = sequelize.define('User', {
   timestamps: true   // si no usas createdAt y updatedAt
 });
 
+User.associate = function (models) {
+  User.hasMany(models.Event, { foreignKey: 'user_id' });
+};
+
 module.exports = User;

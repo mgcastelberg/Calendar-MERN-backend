@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../database/mysql');
-const { use } = require('react');
 
 const Event = sequelize.define('Event', {
   title: {
@@ -12,11 +11,11 @@ const Event = sequelize.define('Event', {
     allowNull: true,
   },
   start: {
-    type: DataTypes.DATETIME,
+    type: DataTypes.DATE,
     allowNull: false,
   },
   end: {
-    type: DataTypes.DATETIME,
+    type: DataTypes.DATE,
     allowNull: false
   },
   user_id: {
@@ -27,5 +26,17 @@ const Event = sequelize.define('Event', {
   tableName: 'events', // nombre de la tabla en MySQL
   timestamps: true   // si no usas createdAt y updatedAt
 });
+
+Event.associate = function (models) {
+  Event.belongsTo(models.User, { foreignKey: 'user_id' });
+};
+
+// Elimina las propiedades createdAt y updatedAt
+Event.prototype.toJSON = function () {
+  const values = { ...this.get() };
+  delete values.createdAt;
+  delete values.updatedAt;
+  return values;
+};
 
 module.exports = Event;
