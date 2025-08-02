@@ -9,6 +9,7 @@ const sequelize = new Sequelize(
     host: process.env.MYSQL_HOST,
     dialect: 'mysql',
     logging: false, // Puedes poner true si quieres ver las consultas en consola
+    // timezone: '-06:00', // fuerza a que se guarde como UTC-6
   }
 );
 

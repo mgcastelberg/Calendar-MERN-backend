@@ -27,16 +27,16 @@ const Event = sequelize.define('Event', {
   timestamps: true   // si no usas createdAt y updatedAt
 });
 
-Event.associate = function (models) {
-  Event.belongsTo(models.User, { foreignKey: 'user_id' });
+Event.associate = function(models) {
+  Event.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' }); // CORRECTO
 };
 
 // Elimina las propiedades createdAt y updatedAt
-Event.prototype.toJSON = function () {
-  const values = { ...this.get() };
-  delete values.createdAt;
-  delete values.updatedAt;
-  return values;
-};
+// Event.prototype.toJSON = function () {
+//   const values = { ...this.get() };
+//   delete values.createdAt;
+//   delete values.updatedAt;
+//   return values;
+// };
 
 module.exports = Event;
