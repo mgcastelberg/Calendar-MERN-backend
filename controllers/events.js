@@ -57,19 +57,53 @@ const createEvent = async (req, res = response) => {
     });
 }
 
-const updateEvent = (req, res = response) => {
-    res.json({
-        status:true,
-        msg: 'updateEvent...',
-    });
+const updateEvent = async(req, res = response) => {
+
+    const eventId = req.params.id;
+    const { title, start, end, notes } = req.body;
+    // console.log(eventId, title, start, end, notes);
+    try {
+        let event = await Event.findOne({ where: { id: eventId } });
+        if ( !event ) {
+            return res.status(400).json({
+                status:false,
+                msg: 'Event not found'
+            });
+        }
+
+        if ( event.user_id !== req.uid ) {
+            return res.status(401).json({
+                status:false,
+                msg: 'You do not have permission to update this event'
+            });
+        }
+
+        event.title = title;
+        event.start = start;
+        event.end = end;
+        event.notes = notes;
+        await event.save();
+
+        res.json({
+            status:true,
+            msg: 'updateEvent...',
+            event: event
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status:false,
+            msg: 'Database error, contact administrator',
+        });
+    }
 }
+
 const deleteEvent = (req, res = response) => {
     res.json({
         status:true,
         msg: 'deleteEvent...',
     });
 }
-
 
 module.exports = {
     getEvents,
