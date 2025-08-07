@@ -65,7 +65,7 @@ const updateEvent = async(req, res = response) => {
     try {
         let event = await Event.findOne({ where: { id: eventId } });
         if ( !event ) {
-            return res.status(400).json({
+            return res.status(404).json({
                 status:false,
                 msg: 'Event not found'
             });
@@ -98,11 +98,41 @@ const updateEvent = async(req, res = response) => {
     }
 }
 
-const deleteEvent = (req, res = response) => {
-    res.json({
-        status:true,
-        msg: 'deleteEvent...',
-    });
+const deleteEvent = async(req, res = response) => {
+
+    const eventId = req.params.id;
+    let event = await Event.findOne({ where: { id: eventId } });
+    
+    if ( !event ) {
+        return res.status(404).json({
+            status:false,
+            msg: 'Event not found'
+        });
+    }
+
+    if ( event.user_id !== req.uid ) {
+        return res.status(401).json({
+            status:false,
+            msg: 'You do not have permission to delete this event'
+        });
+    }
+
+    try {
+        Event.destroy({ where: { id: eventId } });
+
+        res.json({
+            status:true,
+            msg: 'deleteEvent...',
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            status:false,
+            msg: 'Database error, contact administrator',
+        });
+    }
+
+    
 }
 
 module.exports = {
